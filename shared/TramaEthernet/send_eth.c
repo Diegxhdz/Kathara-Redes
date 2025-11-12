@@ -174,12 +174,20 @@
    }
 
    // Configuramos la MAC destino para el mensaje final
-   psehHeaderEther->ether_dhost[0] = sbMac[0];
-   psehHeaderEther->ether_dhost[1] = sbMac[1];
-   psehHeaderEther->ether_dhost[2] = sbMac[2];
-   psehHeaderEther->ether_dhost[3] = sbMac[3];
-   psehHeaderEther->ether_dhost[4] = sbMac[4];
-   psehHeaderEther->ether_dhost[5] = sbMac[5];
+  // Reiniciamos la trama
+  memset(sbBufferEther, 0, BUF_SIZ);
+  psehHeaderEther = (struct ether_header *)sbBufferEther;
+
+  // Configuramos la MAC origen (la de la interfaz)
+  psehHeaderEther->ether_shost[0] = (byte)(sirDatos.ifr_hwaddr.sa_data[0]);
+  psehHeaderEther->ether_shost[1] = (byte)(sirDatos.ifr_hwaddr.sa_data[1]);
+  psehHeaderEther->ether_shost[2] = (byte)(sirDatos.ifr_hwaddr.sa_data[2]);
+  psehHeaderEther->ether_shost[3] = (byte)(sirDatos.ifr_hwaddr.sa_data[3]);
+  psehHeaderEther->ether_shost[4] = (byte)(sirDatos.ifr_hwaddr.sa_data[4]);
+  psehHeaderEther->ether_shost[5] = (byte)(sirDatos.ifr_hwaddr.sa_data[5]);
+
+  // Configuramos la MAC destino (la que recibimos)
+  memcpy(psehHeaderEther->ether_dhost, sbMac, 6);
    /*Antes de colocar la longitud de la trama o ETHER_TYPE, colocamos*/
    /*el payload que basicamente es rellenar de letras el mensaje*/
 

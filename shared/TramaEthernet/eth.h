@@ -132,9 +132,9 @@ int isBroadcast(char *psTrama){
     printf("%02x ", byte);
     if (byte != 0xFF) {
       iFlag = 0;
-      printf("\nByte %d no es broadcast: %02x != FF", i, byte);
     }
   }
   printf(" -> %s\n", iFlag ? "SI ES BROADCAST" : "NO ES BROADCAST");
   return iFlag;
 }
+cd
